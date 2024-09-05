@@ -24,16 +24,18 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
     private ResourceLoader resourceLoader;
 
     public static void main(String[] args) {
+    	
+    	if (args.length <= 3) {
+            System.out.println("COMANDO CORRETO: java -jar cli.jar analyze --depth <n> --verbose \"{frase}\"");
+            System.exit(0);
+            return;
+        }
         SpringApplication.run(AnalisadorHierarquiaPalavras.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        if (args.length < 3) {
-            System.out.println("COMANDO CORRETO: java -jar cli.jar analyze --depth <n> --verbose (opcional) \"{phrase}\"");
-            return;
-        }
-
+        
         long inicioParametros = System.currentTimeMillis();
         int profundidade = 0;
         boolean verbose = false;
@@ -56,6 +58,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         }
 
         String frase = fraseBuilder.toString().trim();
+        System.out.println(frase);
 
         if (frase.isEmpty()) {
             System.out.println("Por favor, forneça uma frase para análise.");
@@ -70,14 +73,33 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         if (verbose) {
             exibirMetricas();
         }
+        
+        System.exit(0);
+        
+        //SpringApplication.exit(SpringApplication.run(AnalisadorHierarquiaPalavras.class, args), () -> 0);
     }
-
 
     private void carregarHierarquia() {
         ObjectMapper mapper = new ObjectMapper();
+        
+        /* 
+         * Meio alternativo:
+         
+         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dicts/hierarchy.json")) {
+        	if (inputStream == null) {
+            	throw new IOException("Arquivo não encontrado!");
+        	}
+        	JsonNode jsonNode = mapper.readTree(inputStream);
+        	hierarquia = mapper.convertValue(jsonNode, Map.class);
+        	System.out.println("Hierarquia carregada com sucesso!");
+    	} catch (IOException e) {
+        	e.printStackTrace();
+    	}
+         
+         * */
         try {
-            Resource resource = resourceLoader.getResource("classpath:dicts/hierarchy.json");
-            InputStream inputStream = resource.getInputStream();
+            Resource resource = resourceLoader.getResource("classpath:dicts/hierarchy.json"); // vale a pena usar AsStream?
+            InputStream inputStream = resource.getInputStream(); // Justamente por estar pegando um InputStream
             JsonNode jsonNode = mapper.readTree(inputStream);
             hierarquia = mapper.convertValue(jsonNode, Map.class);
             System.out.println("Hierarquia carregada com sucesso!");
