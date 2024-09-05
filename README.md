@@ -34,13 +34,13 @@ Sintaxe (as chaves não devem ir no input - ver exemplos):
 
 Exemplos: 
 
-`java -jar analisador-hierarquia-palavras-0.0.1-SNAPSHOT.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose`
+`java -jar cli.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose`
 
-`java -jar analisador-hierarquia-palavras-0.0.1-SNAPSHOT.jar analyze --depth 2 "Eu amo papagaios" --verbose`
+`java -jar cli.jar analyze --depth 2 "Eu amo papagaios" --verbose`
 
-`java -jar analisador-hierarquia-palavras-0.0.1-SNAPSHOT.jar analyze --depth 5 "Eu vi gorilas e papagaios`
+`java -jar cli.jar analyze --depth 5 "Eu vi gorilas e papagaios`
 
-`java -jar analisador-hierarquia-palavras-0.0.1-SNAPSHOT.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose` 
+`java -jar cli.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose` 
 
 ---
 
