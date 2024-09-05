@@ -1,0 +1,30 @@
+{
+  "Animais": {
+    "Mamíferos": {
+      "Carnívoros": {
+        "Felinos": ["Leões", "Tigres", "Jaguars", "Leopardos"],
+        "Canídeos": ["Lobos", "Raposas", "Cães"]
+      },
+      "Herbívoros": {
+        "Equídeos": ["Cavalos", "Zebras", "Asnos"],
+        "Bovídeos": ["Bois", "Búfalos", "Antílopes", "Cabras"]
+      },
+      "Primatas": ["Gorilas", "Chimpanzés", "Orangotangos"]
+    },
+    "Aves": {
+      "Rapinas": ["Águias", "Falcões", "Corujas", "Milhafres"],
+      "Pássaros": ["Canários", "Papagaios", "Pardais", "Rouxinóis"]
+    },
+    "Répteis": {
+      "Cobras": ["Jiboias", "Pítons", "Corais"],
+      "Lagartos": ["Camaleões", "Geckos", "Iguanas"]
+    }
+  },
+  "Plantas": {
+    "Angiospermas": {
+      "Monocotiledôneas": ["Orquídeas", "Tulipas", "Lírios"],
+      "Dicotiledôneas": ["Rosas", "Girassóis", "Margaridas"]
+    },
+    "Gimnospermas": ["Pinheiros", "Ciprestes", "Sequoias"]
+  }
+}
