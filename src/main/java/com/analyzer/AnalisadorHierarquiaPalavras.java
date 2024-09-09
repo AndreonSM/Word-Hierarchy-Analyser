@@ -24,8 +24,8 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
     private ResourceLoader resourceLoader;
 
     public static void main(String[] args) {
-    	
-    	if (args.length <= 3) {
+
+        if (args.length <= 3) {
             System.out.println("COMANDO CORRETO: java -jar cli.jar analyze --depth <n> --verbose \"{frase}\"");
             System.exit(0);
             return;
@@ -35,7 +35,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        
+
         long inicioParametros = System.currentTimeMillis();
         int profundidade = 0;
         boolean verbose = false;
@@ -52,7 +52,6 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
                     verbose = true;
                     break;
                 default:
-                    // Concatenando todos os outros argumentos que não são flags ou valores de flags
                     fraseBuilder.append(args[i]).append(" ");
             }
         }
@@ -73,33 +72,16 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         if (verbose) {
             exibirMetricas();
         }
-        
+
         System.exit(0);
-        
-        //SpringApplication.exit(SpringApplication.run(AnalisadorHierarquiaPalavras.class, args), () -> 0);
     }
 
     private void carregarHierarquia() {
         ObjectMapper mapper = new ObjectMapper();
-        
-        /* 
-         * Meio alternativo:
-         
-         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dicts/hierarchy.json")) {
-        	if (inputStream == null) {
-            	throw new IOException("Arquivo não encontrado!");
-        	}
-        	JsonNode jsonNode = mapper.readTree(inputStream);
-        	hierarquia = mapper.convertValue(jsonNode, Map.class);
-        	System.out.println("Hierarquia carregada com sucesso!");
-    	} catch (IOException e) {
-        	e.printStackTrace();
-    	}
-         
-         * */
+
         try {
-            Resource resource = resourceLoader.getResource("classpath:dicts/hierarchy.json"); // vale a pena usar AsStream?
-            InputStream inputStream = resource.getInputStream(); // Justamente por estar pegando um InputStream
+            Resource resource = resourceLoader.getResource("classpath:dicts/hierarchy.json");
+            InputStream inputStream = resource.getInputStream();
             JsonNode jsonNode = mapper.readTree(inputStream);
             hierarquia = mapper.convertValue(jsonNode, Map.class);
             System.out.println("Hierarquia carregada com sucesso!");
@@ -118,12 +100,12 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         // Dividindo a frase em palavras e removendo pontuações
         String[] palavras = frase.split("\\W+");
 
-        // Buscando cada palavra dada no args através do método
+        // Buscando cada palavra na hierarquia
         for (String palavra : palavras) {
             verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado);
         }
 
-        // Output'ando no formato sugerido do desafio
+        // Exibindo o resultado no formato solicitado
         if (resultado.isEmpty()) {
             System.out.println("0;");
         } else {
@@ -133,53 +115,47 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         tempoVerificacaoFrase = System.currentTimeMillis() - inicioVerificacao;
     }
 
-
-    private void verificarPalavraNaHierarquia(Map<String, Object> node, 
-    										String palavra, 
-    										int profundidadeAtual, 
-    										int nivelAtual, 
-    										Map<String, Integer> resultado) { 
-    	if (nivelAtual > profundidadeAtual) {
-            return;
-        }
+    /**
+     * Método para verificar a palavra na hierarquia e respeitar a profundidade especificada.
+     */
+    private boolean verificarPalavraNaHierarquia(Map<String, Object> node, 
+                                                 String palavra, 
+                                                 int profundidadeDesejada, 
+                                                 int nivelAtual, 
+                                                 Map<String, Integer> resultado) {
 
         for (Map.Entry<String, Object> entry : node.entrySet()) {
             String categoria = entry.getKey();
             Object filhos = entry.getValue();
 
-            // System.out.println("Verificando categoria: " + categoria + " no nível " + nivelAtual);
-            // System.out.println("Filhos: " + filhos + ".");
-
-            // Verifica se o valor é uma lista de palavras; se sim, busca a palavra em questão
+            // Verifica se o valor é uma lista de palavras
             if (filhos instanceof List) {
-                
-            	// System.out.println("***** FILHOS INSTANCEOF LIST");
                 List<String> lista = (List<String>) filhos;
                 for (String item : lista) {
                     if (item.equalsIgnoreCase(palavra)) {
-                        // System.out.println("Palavra encontrada: " + palavra + " em categoria: " + categoria + " no nível " + nivelAtual);
-                        resultado.put(categoria, resultado.getOrDefault(categoria, 0) + 1);
-                        break;  
+                        // Se estamos dentro da profundidade desejada, conta a categoria
+                        if (nivelAtual <= profundidadeDesejada) {
+                            resultado.put(categoria, resultado.getOrDefault(categoria, 0) + 1);
+                        }
+                        // Encerra busca ao encontrar a palavra
+                        return true; 
                     }
-                    
                 }
-                
-            } 
-            // Continua verificando subníveis se o valor for um mapa (subcategoria)
+            }
+            // Continua verificando subcategorias se o valor for um mapa (i.e., não é o nível mais profundo do JSON
             else if (filhos instanceof Map) {
-            	// System.out.println("*****8 FILHOS INSTANCEOF MAP");
-            	verificarPalavraNaHierarquia((Map<String, Object>) filhos, palavra, profundidadeAtual, nivelAtual + 1, resultado);
-            } 
-            // TODO: ver se esse if é necessário mesmo
-            // Caso o valor seja uma palavra diretamente, verificar se corresponde 
-            else if (filhos instanceof String) {
-            	// System.out.println("Verificando palavras no fundo!!");
-                if (filhos.equals(palavra.toLowerCase())) {
-                    // System.out.println("Palavra encontrada: " + palavra + " diretamente na categoria: " + categoria + " no nível " + nivelAtual);
+                boolean encontrada = verificarPalavraNaHierarquia((Map<String, Object>) filhos, palavra, profundidadeDesejada, nivelAtual + 1, resultado);
+                if (encontrada && nivelAtual == profundidadeDesejada) {
+                    // Se encontramos a palavra em um nível mais profundo, somamos na categoria atual
                     resultado.put(categoria, resultado.getOrDefault(categoria, 0) + 1);
+                }
+                if (encontrada) {
+                    return true; 
                 }
             }
         }
+        // Encerra busca, como falso, se não puder encontrar nada
+        return false; 
     }
 
     private void exibirMetricas() {

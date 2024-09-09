@@ -34,13 +34,13 @@ Sintaxe (as chaves não devem ir no input - ver exemplos):
 
 Exemplos: 
 
-`java -jar cli.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose`
+```java -jar cli.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose```
 
-`java -jar cli.jar analyze --depth 2 "Eu amo papagaios" --verbose`
+```java -jar cli.jar analyze --depth 2 "Eu amo papagaios" --verbose```
 
-`java -jar cli.jar analyze --depth 5 "Eu vi gorilas e papagaios`
+```java -jar cli.jar analyze --depth 5 "Eu vi gorilas e papagaios```
 
-`java -jar cli.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose` 
+```java -jar cli.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose``` 
 
 ---
 
@@ -48,7 +48,7 @@ Exemplos:
 
 ### 1 - Desenvolvimento da CLI
 - Desenvolvimento da funcionalidade
-    - Há de ser feito, em futuro próximo, melhorias de perfomance, QoL (e.g. exibição melhorada no terminal) e testes unitários requisitados.
+    - Há de ser feito, em futuro próximo, alguns testes unitários requisitados.
 
 
 ### 2 - Desenvolvimento front-end
