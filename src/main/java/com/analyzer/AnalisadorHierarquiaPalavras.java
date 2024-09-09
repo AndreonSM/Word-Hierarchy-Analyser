@@ -19,6 +19,10 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
     private Map<String, Object> hierarquia;
     private long tempoCarregamentoParametros;
     private long tempoVerificacaoFrase;
+    
+ 
+    // Variável de instância para armazenar o resultado
+    private Map<String, Integer> resultado; 
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -76,7 +80,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         System.exit(0);
     }
 
-    private void carregarHierarquia() {
+    void carregarHierarquia() {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -90,7 +94,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         }
     }
 
-    private void realizarAnalise(String frase, int profundidade) {
+    void realizarAnalise(String frase, int profundidade) {
         long inicioVerificacao = System.currentTimeMillis();
         Map<String, Integer> resultado = new HashMap<>();
 
@@ -109,10 +113,32 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         if (resultado.isEmpty()) {
             System.out.println("0;");
         } else {
-            resultado.forEach((categoria, contagem) -> System.out.print(categoria + " = " + contagem + "; "));
+            resultado.forEach((categoria, contagem) -> System.out.println(categoria + " = " + contagem + ";"));
+        }
+        System.out.println(resultado);
+        
+        tempoVerificacaoFrase = System.currentTimeMillis() - inicioVerificacao;
+    }
+    
+    // Método para a classe de testes
+    public String getResultado() {
+        if (resultado == null || resultado.isEmpty()) {
+            return "0;";
         }
 
-        tempoVerificacaoFrase = System.currentTimeMillis() - inicioVerificacao;
+        StringBuilder sb = new StringBuilder();
+        resultado.forEach((categoria, contagem) -> sb.append(categoria).append(" = ").append(contagem).append("; "));
+        return sb.toString().trim(); // Removendo espaços extras no final
+    }
+    
+    public Map<String, Integer> getResultadoMap() {
+    	System.out.println(resultado);
+        return resultado;
+    }
+    
+    // Método setter para o ResourceLoader (para a classe de testes também)
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
     }
 
     /**
