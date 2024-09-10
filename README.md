@@ -101,5 +101,6 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ## Execução
 
 - Clone o projeto do github para a sua máquina;
+- Faça a build do seu projeto (tanto faz se pelo terminal ou pela IDE), gerando um .jar na pasta target;
 - Abra uma CLI **dentro da pasta `target`** e execute comandos de acordo com a sintaxe exposta acima.
 
