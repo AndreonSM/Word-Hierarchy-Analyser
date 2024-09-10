@@ -19,9 +19,6 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
     private Map<String, Object> hierarquia;
     private long tempoCarregamentoParametros;
     private long tempoVerificacaoFrase;
-    
- 
-    // Variável de instância para armazenar o resultado
     private Map<String, Integer> resultado; 
 
     @Autowired
@@ -43,6 +40,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         long inicioParametros = System.currentTimeMillis();
         int profundidade = 0;
         boolean verbose = false;
+        Map<String, Integer> resultado;
         StringBuilder fraseBuilder = new StringBuilder();
 
         for (int i = 0; i < args.length; i++) {
@@ -88,7 +86,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
             InputStream inputStream = resource.getInputStream();
             JsonNode jsonNode = mapper.readTree(inputStream);
             hierarquia = mapper.convertValue(jsonNode, Map.class);
-            System.out.println("Hierarquia carregada com sucesso!");
+            //System.out.println("Hierarquia carregada com sucesso!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,7 +94,7 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
 
     void realizarAnalise(String frase, int profundidade) {
         long inicioVerificacao = System.currentTimeMillis();
-        Map<String, Integer> resultado = new HashMap<>();
+        this.resultado = new HashMap<>();
 
         // Normalizando a frase para que a comparação não seja case-sensitive
         frase = frase.toLowerCase();
@@ -104,11 +102,10 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         // Dividindo a frase em palavras e removendo pontuações
         String[] palavras = frase.split("[^\\p{L}]+");
 
-        // String[] palavras = frase.split("\\W+");
-
         // Buscando cada palavra na hierarquia
         for (String palavra : palavras) {
-            System.out.println(verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado));
+            //System.out.println(verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado));
+            verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado);
         }
 
         // Exibindo o resultado no formato solicitado
@@ -118,7 +115,6 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
             resultado.forEach((categoria, contagem) -> System.out.print(categoria + " = " + contagem + "; "));
         }
         System.out.println("");
-        System.out.println(resultado);
         
         tempoVerificacaoFrase = System.currentTimeMillis() - inicioVerificacao;
     }

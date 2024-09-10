@@ -40,12 +40,25 @@ public class AnalisadorHierarquiaPalavrasTest {
         // Testando a análise com profundidade 3
         analisador.realizarAnalise("Eu amo papagaios", 2);
         
+        // Obtendo o resultado
+        Map<String, Integer> resultado = analisador.getResultadoMap();
+
+        // Verificando os valores esperados para cada categoria
+        assertEquals(1, resultado.get("Aves"));
+        
     }
 
     @Test
     public void testAnaliseProfundidade1() {
         // Testando a análise com profundidade 1
         analisador.realizarAnalise("Eu amo papagaios e tulipas ", 3);
+        
+        // Obtendo o resultado
+        Map<String, Integer> resultado = analisador.getResultadoMap();
+
+        // Verificando os valores esperados para cada categoria
+        assertEquals(1, resultado.get("Pássaros"));
+        assertEquals(1, resultado.get("Monocotiledôneas"));
         
         
     }
@@ -57,6 +70,13 @@ public class AnalisadorHierarquiaPalavrasTest {
 
         // Testando a análise com profundidade 1
         analisador.realizarAnalise(textoLongo, 1);
+        
+        // Obtendo o resultado
+        Map<String, Integer> resultado = analisador.getResultadoMap();
+
+        // Verificando os valores esperados para cada categoria
+        assertEquals(450, resultado.get("Plantas"));
+        assertEquals(900, resultado.get("Animais"));
         
         
     }

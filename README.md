@@ -34,21 +34,34 @@ Sintaxe (as chaves não devem ir no input - ver exemplos):
 
 Exemplos: 
 
-```java -jar cli.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose```
+```
+java -jar cli.jar analyze --depth 5 "pApAgAiOs tUlipAs" --verbose
+```
 
-```java -jar cli.jar analyze --depth 2 "Eu amo papagaios" --verbose```
+```
+java -jar cli.jar analyze --depth 2 "Eu amo papagaios" --verbose
+```
 
-```java -jar cli.jar analyze --depth 5 "Eu vi gorilas e papagaios```
+```
+java -jar cli.jar analyze --depth 5 "Eu vi gorilas e papagaios"
+```
 
-```java -jar cli.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose``` 
+```
+java -jar cli.jar analyze --depth 5 "EU tenho preferência por animais carnívoros" --verbose
+``` 
+
+```
+java -jar cli.jar analyze --depth 1 "Búfalos, pítons e rouxinóis... nada os supera, além dos girassói, orquídeas e ciprestes " --verbose
+``` 
+
 
 ---
 
 ## Backlog:
 
 ### 1 - Desenvolvimento da CLI
-- Desenvolvimento da funcionalidade
-    - Há de ser feito, em futuro próximo, alguns testes unitários requisitados.
+- Desenvolvimento da funcionalidade e testes unitários.
+    - Está pronto! Claro, ainda é possível algumas melhorias de qualidade de vida (QoL), mas está funcional conforme o requisitado e esperado.
 
 
 ### 2 - Desenvolvimento front-end
