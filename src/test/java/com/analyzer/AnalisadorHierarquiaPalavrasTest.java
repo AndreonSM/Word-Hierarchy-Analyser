@@ -38,14 +38,14 @@ public class AnalisadorHierarquiaPalavrasTest {
     @Test
     public void testAnaliseProfundidade3() {
         // Testando a análise com profundidade 3
-        analisador.realizarAnalise("Eu amo papagaios", 3);
+        analisador.realizarAnalise("Eu amo papagaios", 2);
         
     }
 
     @Test
     public void testAnaliseProfundidade1() {
         // Testando a análise com profundidade 1
-        analisador.realizarAnalise("Eu amo papagaios", 1);
+        analisador.realizarAnalise("Eu amo papagaios e tulipas ", 3);
         
         
     }
@@ -53,7 +53,7 @@ public class AnalisadorHierarquiaPalavrasTest {
     @Test
     public void testTextoComMaisDe5000Caracteres() {
         // Criando um texto longo com mais de 5000 caracteres
-        String textoLongo = "papagaio tulipa ".repeat(500);
+        String textoLongo = "tulipas papagaios búfalos ".repeat(450);
 
         // Testando a análise com profundidade 1
         analisador.realizarAnalise(textoLongo, 1);

@@ -102,45 +102,27 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         frase = frase.toLowerCase();
 
         // Dividindo a frase em palavras e removendo pontuações
-        String[] palavras = frase.split("\\W+");
+        String[] palavras = frase.split("[^\\p{L}]+");
+
+        // String[] palavras = frase.split("\\W+");
 
         // Buscando cada palavra na hierarquia
         for (String palavra : palavras) {
-            verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado);
+            System.out.println(verificarPalavraNaHierarquia(hierarquia, palavra, profundidade, 1, resultado));
         }
 
         // Exibindo o resultado no formato solicitado
         if (resultado.isEmpty()) {
             System.out.println("0;");
         } else {
-            resultado.forEach((categoria, contagem) -> System.out.println(categoria + " = " + contagem + ";"));
+            resultado.forEach((categoria, contagem) -> System.out.print(categoria + " = " + contagem + "; "));
         }
+        System.out.println("");
         System.out.println(resultado);
         
         tempoVerificacaoFrase = System.currentTimeMillis() - inicioVerificacao;
     }
     
-    // Método para a classe de testes
-    public String getResultado() {
-        if (resultado == null || resultado.isEmpty()) {
-            return "0;";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        resultado.forEach((categoria, contagem) -> sb.append(categoria).append(" = ").append(contagem).append("; "));
-        return sb.toString().trim(); // Removendo espaços extras no final
-    }
-    
-    public Map<String, Integer> getResultadoMap() {
-    	System.out.println(resultado);
-        return resultado;
-    }
-    
-    // Método setter para o ResourceLoader (para a classe de testes também)
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
     /**
      * Método para verificar a palavra na hierarquia e respeitar a profundidade especificada.
      */
@@ -188,4 +170,26 @@ public class AnalisadorHierarquiaPalavras implements CommandLineRunner {
         System.out.println("\nTempo de carregamento dos parâmetros: " + tempoCarregamentoParametros + "ms");
         System.out.println("Tempo de verificação da frase: " + tempoVerificacaoFrase + "ms");
     }
+    
+    // Método para a classe de testes
+    public String getResultado() {
+        if (resultado == null || resultado.isEmpty()) {
+            return "0;";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        resultado.forEach((categoria, contagem) -> sb.append(categoria).append(" = ").append(contagem).append("; "));
+        return sb.toString().trim(); // Removendo espaços extras no final
+    }
+    
+    public Map<String, Integer> getResultadoMap() {
+    	System.out.println(resultado);
+        return resultado;
+    }
+    
+    // Método setter para o ResourceLoader (para a classe de testes também)
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
 }
